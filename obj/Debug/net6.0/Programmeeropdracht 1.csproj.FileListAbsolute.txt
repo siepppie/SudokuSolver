@@ -1,0 +1,15 @@
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\bin\Debug\net6.0\Programmeeropdracht 1.exe
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\bin\Debug\net6.0\Programmeeropdracht 1.deps.json
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\bin\Debug\net6.0\Programmeeropdracht 1.runtimeconfig.json
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\bin\Debug\net6.0\Programmeeropdracht 1.dll
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\bin\Debug\net6.0\Programmeeropdracht 1.pdb
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\Programmeeropdracht 1.csproj.AssemblyReference.cache
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\Programmeeropdracht 1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\Programmeeropdracht 1.AssemblyInfoInputs.cache
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\Programmeeropdracht 1.AssemblyInfo.cs
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\Programmeeropdracht 1.csproj.CoreCompileInputs.cache
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\Programmeeropdracht 1.dll
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\refint\Programmeeropdracht 1.dll
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\Programmeeropdracht 1.pdb
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\Programmeeropdracht 1.genruntimeconfig.cache
+C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\ref\Programmeeropdracht 1.dll
