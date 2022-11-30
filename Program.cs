@@ -1,140 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
-namespace Sudoku
+namespace SudokuSolver
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // Read txt file and store in array
-            string[] lines = System.IO.File.ReadAllLines("Sudoku_puzzels_5.txt");
-
-            // Delete every line that is not a puzzle
-            for (int i = 0; i < lines.Length; i++)
-            {
-                if (lines[i].Length != 162)
-                {
-                    lines[i] = "";
-                }
-            }
-
-            // Count the number of puzzles
-            int count = 0;
-            for (int i = 0; i < lines.Length; i++)
-            {
-                if (lines[i] != "")
-                {
-                    count++;
-                }
-            }
-
-            // Create a new array with only the puzzles
-            string[] puzzles = new string[count];
-            int j = 0;
-            for (int i = 0; i < lines.Length; i++)
-            {
-                if (lines[i] != "")
-                {
-                    puzzles[j] = lines[i].Replace(" ", "");
-                    j++;
-                }
-            }
-
-            // Create a new Sudoku object for every puzzle
-            Sudoku[] sudoku = new Sudoku[puzzles.Length];
-
-            for (int i = 0; i < puzzles.Length; i++)
-            {
-                sudoku[i] = new Sudoku(puzzles[i]);
-            }
-
-            // Solve every puzzle
-            for (int i = 0; i < sudoku.Length; i++)
-            {
-                sudoku[i].Solve();
-            }
-
-            // Print every puzzle
-            for (int i = 0; i < sudoku.Length; i++)
-            {
-                sudoku[i].Display();
-            }
+            int[] inputpuzzle = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+            Sudoku sudoku = new Sudoku(inputpuzzle);
+            sudoku.Solve();
+            sudoku.Print();
         }
     }
-
     class Sudoku
     {
-        private int[,] board = new int[9, 9];
+        Cell[,] cells;
+        Block[] blocks;
 
-        public Sudoku(string board)
+        public Sudoku(int[] inputpuzzle)
         {
-            int k = 0;
+            cells = new Cell[9, 9];
+            blocks = new Block[9];
+            for (int i = 0; i < 9; i++)
+            {
+                blocks[i] = new Block();
+            }
+            // fill cells
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    this.board[i, j] = (int)Char.GetNumericValue(board[k]);
-                    k++;
+                    cells[i, j] = new Cell(inputpuzzle[i * 9 + j]);
+                    blocks[i / 3 * 3 + j / 3].cells[i % 3, j % 3] = cells[i, j];
                 }
             }
         }
 
-        public bool Solve()
+        // TODO: Solve method
+        public void Solve()
         {
-            return Solve(0, 0);
         }
 
-        private bool Solve(int row, int col)
-        {
-            if (row == 9)
-            {
-                row = 0;
-                if (++col == 9)
-                    return true;
-            }
-
-            if (board[row, col] != 0)
-                return Solve(row + 1, col);
-
-            for (int val = 1; val <= 9; ++val)
-            {
-                if (Legal(row, col, val))
-                {
-                    board[row, col] = val;
-                    if (Solve(row + 1, col))
-                        return true;
-                }
-            }
-
-            board[row, col] = 0;
-            return false;
-        }
-
-        private bool Legal(int row, int col, int val)
-        {
-            for (int k = 0; k < 9; ++k)
-                if (val == board[row, k])
-                    return false;
-
-            for (int k = 0; k < 9; ++k)
-                if (val == board[k, col])
-                    return false;
-
-            int boxRowOffset = (row / 3) * 3;
-            int boxColOffset = (col / 3) * 3;
-            for (int i = 0; i < 3; ++i)
-                for (int j = 0; j < 3; ++j)
-                    if (val == board[boxRowOffset + i, boxColOffset + j])
-                        return false;
-
-            return true;
-        }
-
-        public void Display()
+        public void Print()
         {
             for (int row = 0; row < 9; ++row)
             {
@@ -146,7 +55,7 @@ namespace Sudoku
                     if (col % 3 == 0)
                         Console.Write("| ");
 
-                    Console.Write(board[row, col] != 0 ? board[row, col] + " " : "  ");
+                    Console.Write(cells[row, col].value + " ");
                 }
 
                 Console.WriteLine("|");
@@ -154,6 +63,72 @@ namespace Sudoku
 
             Console.WriteLine(" -----------------------");
             Console.WriteLine();
+        }
+    }
+    class Block
+    {
+        // 3x3 block of cells
+        public Cell[,] cells = new Cell[3,3];
+        public Block(Cell[,] cells)
+        {
+            this.cells = cells;
+        }
+        public Block()
+        {
+        }
+        // fill with possible values
+        public void Fill()
+        {
+            List<int> possibleValues = new List<int>();
+            for (int i = 1; i < 10; i++)
+            {
+                possibleValues.Add(i);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (cells[i, j].value != 0)
+                    {
+                        possibleValues.Remove(cells[i, j].value);
+                    }
+                }
+            }
+            foreach (Cell cell in cells)
+            {
+                if (cell.value == 0)
+                {
+                    // set value and remove from list
+                    cell.value = possibleValues[0];
+                    possibleValues.RemoveAt(0);
+                }
+            }
+        }
+        public void Print()
+        {
+            for (int row = 0; row < 3; ++row)
+            {
+                for (int col = 0; col < 3; ++col)
+                {
+                    Console.Write(cells[row, col].value + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+    class Cell
+    {
+        public int value;
+        public bool isFixed;
+        public Cell(int input)
+        {
+            value = input;
+            isFixed = false;
+        }
+        public Cell(int input, bool isFixed)
+        {
+            this.isFixed = isFixed;
+            value = input;
         }
     }
 }
