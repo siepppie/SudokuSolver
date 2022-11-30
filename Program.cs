@@ -32,7 +32,21 @@ namespace SudokuSolver
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    cells[i, j] = new Cell(inputpuzzle[i * 9 + j]);
+                    if (inputpuzzle[i * 9 + j] != 0)
+                    {
+                        cells[i, j] = new Cell(inputpuzzle[i * 9 + j], true);
+                    }
+                    else
+                    {
+                        cells[i, j] = new Cell();
+                    }
+                }
+            }
+            // fill blocks
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
                     blocks[i / 3 * 3 + j / 3].cells[i % 3, j % 3] = cells[i, j];
                 }
             }
@@ -41,6 +55,10 @@ namespace SudokuSolver
         // TODO: Solve method
         public void Solve()
         {
+            for(int i=0;i<9;i++)
+            {
+                blocks[i].Fill();
+            }
         }
 
         public void Print()
@@ -104,6 +122,8 @@ namespace SudokuSolver
                 }
             }
         }
+
+        // only for debugging
         public void Print()
         {
             for (int row = 0; row < 3; ++row)
@@ -120,6 +140,11 @@ namespace SudokuSolver
     {
         public int value;
         public bool isFixed;
+        public Cell()
+        {
+            value = 0;
+            isFixed = false;
+        }
         public Cell(int input)
         {
             value = input;
