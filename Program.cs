@@ -18,6 +18,7 @@ namespace SudokuSolver
     {
         Cell[,] cells;
         Block[] blocks;
+        int iterations_until_randwalk = 10;
 
         public Sudoku(int[] inputpuzzle)
         {
@@ -55,10 +56,93 @@ namespace SudokuSolver
         // TODO: Solve method
         public void Solve()
         {
+            // fill blocks with the numbers that are not fixed
             for(int i=0;i<9;i++)
             {
                 blocks[i].Fill();
             }
+            // fill cells with the numbers that are not fixed
+            // loop over blocks and set cells to the cells in the blocks
+            for(int i=0;i<9;i++)
+            {
+                for(int j=0;j<9;j++)
+                {
+                    cells[i, j] = blocks[i / 3 * 3 + j / 3].cells[i % 3, j % 3];
+                }
+            }
+            // print score
+            Console.WriteLine(Score());
+            int prev_score = 0;
+            int iterationssame = 0;
+            while (Score() > 0)
+            {
+                // select random block and try all swaps, pick the best one
+                Random rnd = new Random();
+                int block = rnd.Next(0, 9);
+                int bestscore = Score();
+                int besti = 0;
+                int bestj = 0;
+                for (int i = 0; i < 9; i++)
+                {
+                    for (int j = 0; j < 9; j++)
+                    {
+                        blocks[block].Swap(i, j);
+                        if (Score() < bestscore)
+                        {
+                            bestscore = Score();
+                            besti = i;
+                            bestj = j;
+                        }
+                        blocks[block].Swap(i, j);
+                    }
+                }
+                blocks[block].Swap(besti, bestj);
+                // print score
+                Console.WriteLine(Score());
+                // if score is the same as before check if we should do a random walk
+                if (Score() == prev_score)
+                {
+                    iterationssame++;
+                    if (iterationssame >= iterations_until_randwalk)
+                    {
+                        // TODO random walk
+                        break;
+                        iterationssame = 0;
+                    }
+                }
+                else
+                {
+                    iterationssame = 0;
+                }
+                prev_score = Score();
+            }
+        }
+
+        public int Score()
+        {
+            // loop over rows and columns and check how many numbers are missing
+            int score = 0;
+            // rows
+            for (int i = 0; i < 9; i++)
+            {
+                int[] row = new int[9];
+                for (int j = 0; j < 9; j++)
+                {
+                    row[j] = cells[i, j].value;
+                }
+                score += 9 - row.Distinct().Count();
+            }
+            // columns
+            for (int i = 0; i < 9; i++)
+            {
+                int[] column = new int[9];
+                for (int j = 0; j < 9; j++)
+                {
+                    column[j] = cells[j, i].value;
+                }
+                score += 9 - column.Distinct().Count();
+            }
+            return score;
         }
 
         public void Print()
@@ -120,6 +204,17 @@ namespace SudokuSolver
                     cell.value = possibleValues[0];
                     possibleValues.RemoveAt(0);
                 }
+            }
+        }
+
+        public void Swap(int i, int j)
+        {
+            // swap cells[i,j] and cells[j,i] if they are not fixed
+            if(!cells[i / 3, i % 3].isFixed && !cells[j / 3, j % 3].isFixed)
+            {
+                int temp = cells[i / 3, i % 3].value;
+                cells[i / 3, i % 3].value = cells[j / 3, j % 3].value;
+                cells[j / 3, j % 3].value = temp;
             }
         }
 
