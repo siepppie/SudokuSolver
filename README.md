@@ -1,7 +1,7 @@
 # SudokuSolver
 SudokuSolver for Computational Intelligence at Utrecht University
 
-input: 81 numbers seperated by spaces (0 for empty)
+input: 81 numbers seperated by spaces (0 for empty)\
 output: solved sudoku
 
 # How to use
