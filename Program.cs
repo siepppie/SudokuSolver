@@ -16,39 +16,37 @@ namespace SudokuSolver
     }
     class Sudoku
     {
-        Cell[,] cells;
-        Block[] blocks;
+        Cell[,] cells = new Cell[9, 9];
+        Block[,] blocks = new Block[3, 3];
         int iterations_until_randwalk = 10;
+        int score = 0;
 
         public Sudoku(int[] inputpuzzle)
         {
-            cells = new Cell[9, 9];
-            blocks = new Block[9];
-            for (int i = 0; i < 9; i++)
+            // create block objects
+            for(int i = 0; i < 3; i++)
             {
-                blocks[i] = new Block();
+                for(int j = 0; j < 3; j++)
+                {
+                    blocks[i, j] = new Block();
+                }
             }
             // fill cells
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
+                    // cells that are given in the puzzle are fixed
                     if (inputpuzzle[i * 9 + j] != 0)
                     {
-                        cells[i, j] = new Cell(inputpuzzle[i * 9 + j], true);
+                        cells[i, j] = new Cell(inputpuzzle[i * 9 + j], isFixed : true);
                     }
                     else
                     {
                         cells[i, j] = new Cell();
                     }
-                }
-            }
-            // fill blocks
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    blocks[i / 3 * 3 + j / 3].cells[i % 3, j % 3] = cells[i, j];
+                    // add cell to block
+                    blocks[i / 3, j / 3].cells[i % 3, j % 3] = cells[i, j];
                 }
             }
         }
@@ -57,50 +55,50 @@ namespace SudokuSolver
         public void Solve()
         {
             // fill blocks with the numbers that are not fixed
-            for(int i=0;i<9;i++)
+            for(int i = 0; i < 3; i++)
             {
-                blocks[i].Fill();
-            }
-            // fill cells with the numbers that are not fixed
-            // loop over blocks and set cells to the cells in the blocks
-            for(int i=0;i<9;i++)
-            {
-                for(int j=0;j<9;j++)
+                for(int j = 0; j < 3; j++)
                 {
-                    cells[i, j] = blocks[i / 3 * 3 + j / 3].cells[i % 3, j % 3];
+                    blocks[i, j].Fill();
                 }
             }
-            // print score
-            Console.WriteLine(Score());
+            // intialize score
+            score = Score();
+            Console.WriteLine(score);
             int prev_score = 0;
             int iterationssame = 0;
-            while (Score() > 0)
+            while (score > 0)
             {
                 // select random block and try all swaps, pick the best one
                 Random rnd = new Random();
-                int block = rnd.Next(0, 9);
-                int bestscore = Score();
+                (int x, int y) blockrandom = (rnd.Next(0, 3), rnd.Next(0, 3));
+                int bestscore = score;
                 int besti = 0;
                 int bestj = 0;
+                // for every cell in block
                 for (int i = 0; i < 9; i++)
                 {
+                    // swap with every other cell
                     for (int j = 0; j < 9; j++)
                     {
-                        blocks[block].Swap(i, j);
-                        if (Score() < bestscore)
+                        blocks[blockrandom.x, blockrandom.y].Swap(i, j);
+                        // calculate score and check if it is better
+                        int newscore = Score();
+                        if (newscore < bestscore)
                         {
-                            bestscore = Score();
+                            bestscore = newscore;
                             besti = i;
                             bestj = j;
                         }
-                        blocks[block].Swap(i, j);
+                        blocks[blockrandom.x, blockrandom.y].Swap(i, j);
                     }
                 }
-                blocks[block].Swap(besti, bestj);
-                // print score
-                Console.WriteLine(Score());
+                // do the best swap
+                blocks[blockrandom.x, blockrandom.y].Swap(besti, bestj);
+                score = bestscore;
+                Console.WriteLine(score);
                 // if score is the same as before check if we should do a random walk
-                if (Score() == prev_score)
+                if (score == prev_score)
                 {
                     iterationssame++;
                     if (iterationssame >= iterations_until_randwalk)
@@ -112,13 +110,14 @@ namespace SudokuSolver
                 }
                 else
                 {
+                    // if score is changed reset counter
                     iterationssame = 0;
                 }
-                prev_score = Score();
+                prev_score = score;
             }
         }
 
-        public int Score()
+        int Score()
         {
             // loop over rows and columns and check how many numbers are missing
             int score = 0;
@@ -149,20 +148,23 @@ namespace SudokuSolver
         {
             for (int row = 0; row < 9; ++row)
             {
+                // divider between blocks
                 if (row % 3 == 0)
                     Console.WriteLine(" -----------------------");
 
                 for (int col = 0; col < 9; ++col)
                 {
                     if (col % 3 == 0)
+                    // divider between blocks
                         Console.Write("| ");
 
+                    // print cell
                     Console.Write(cells[row, col].value + " ");
                 }
-
+                // edge of the board
                 Console.WriteLine("|");
             }
-
+            // edge of the board
             Console.WriteLine(" -----------------------");
             Console.WriteLine();
         }
@@ -171,21 +173,26 @@ namespace SudokuSolver
     {
         // 3x3 block of cells
         public Cell[,] cells = new Cell[3,3];
+
         public Block(Cell[,] cells)
         {
             this.cells = cells;
         }
+
         public Block()
         {
         }
+
         // fill with possible values
         public void Fill()
         {
+            // add all possible values to the list
             List<int> possibleValues = new List<int>();
             for (int i = 1; i < 10; i++)
             {
                 possibleValues.Add(i);
             }
+            // remove the values that are already in the block
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
@@ -196,6 +203,7 @@ namespace SudokuSolver
                     }
                 }
             }
+            // fill the empty cells with the possible values
             foreach (Cell cell in cells)
             {
                 if (cell.value == 0)
@@ -215,19 +223,6 @@ namespace SudokuSolver
                 int temp = cells[i / 3, i % 3].value;
                 cells[i / 3, i % 3].value = cells[j / 3, j % 3].value;
                 cells[j / 3, j % 3].value = temp;
-            }
-        }
-
-        // only for debugging
-        public void Print()
-        {
-            for (int row = 0; row < 3; ++row)
-            {
-                for (int col = 0; col < 3; ++col)
-                {
-                    Console.Write(cells[row, col].value + " ");
-                }
-                Console.WriteLine();
             }
         }
     }
