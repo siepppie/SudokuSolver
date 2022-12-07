@@ -13,7 +13,7 @@ simply run the program.cs and enter the puzzle
 3: fill the 3x3 blocks with the numbers they don't contain\
 4: choose a random block\
 5: try all possible swaps in the block (of 2 non fixed numbers)\
-6: choose the best swap if it gives a higher or equal score than before the swap\
+6: choose the best swap if it gives a lower or equal score than before the swap\
 7: if the score is the same after x iterations of doing this, do a randomwalk of S times a searchoperator (and return to chosing random blocks\
 8: Print the solved sudoku
 
