@@ -14,6 +14,7 @@ namespace SudokuSolver
             sudoku.Print();
         }
     }
+    // Class Sudoku
     class Sudoku
     {
         Cell[,] cells = new Cell[9, 9];
