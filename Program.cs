@@ -156,6 +156,7 @@ namespace SudokuSolver
                     i--;
                 }
             }
+            score = Score();
         }
 
         public void Print()
