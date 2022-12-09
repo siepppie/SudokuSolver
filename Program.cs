@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -51,8 +51,6 @@ namespace SudokuSolver
                 }
             }
         }
-
-        // TODO: Solve method
         public void Solve()
         {
             // fill blocks with the numbers that are not fixed
@@ -153,7 +151,10 @@ namespace SudokuSolver
                 (int x, int y) blockrandom = (rnd.Next(0, 3), rnd.Next(0, 3));
                 int cell1random = rnd.Next(0, 9);
                 int cell2random = rnd.Next(0, 9);
-                blocks[blockrandom.x, blockrandom.y].Swap(cell1random, cell2random);
+                if (!blocks[blockrandom.x, blockrandom.y].Swap(cell1random, cell2random))
+                {
+                    i--;
+                }
             }
         }
 
@@ -228,7 +229,7 @@ namespace SudokuSolver
             }
         }
 
-        public void Swap(int i, int j)
+        public bool Swap(int i, int j)
         {
             // swap cells[i,j] and cells[j,i] if they are not fixed
             if(!cells[i / 3, i % 3].isFixed && !cells[j / 3, j % 3].isFixed)
@@ -236,7 +237,9 @@ namespace SudokuSolver
                 int temp = cells[i / 3, i % 3].value;
                 cells[i / 3, i % 3].value = cells[j / 3, j % 3].value;
                 cells[j / 3, j % 3].value = temp;
+                return true;
             }
+            return false;
         }
     }
     class Cell
