@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\kek\\.nuget\\packages\\": {}
+    "/home/kek/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kek\\Sync\\sudoku\\SudokuSolver\\Programmeeropdracht 1.csproj",
+      "projectUniqueName": "/home/kek/Sync/SudokuSolver/Programmeeropdracht 1.csproj",
       "projectName": "Programmeeropdracht 1",
-      "projectPath": "C:\\Users\\kek\\Sync\\sudoku\\SudokuSolver\\Programmeeropdracht 1.csproj",
-      "packagesPath": "C:\\Users\\kek\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kek\\Sync\\sudoku\\SudokuSolver\\obj\\",
+      "projectPath": "/home/kek/Sync/SudokuSolver/Programmeeropdracht 1.csproj",
+      "packagesPath": "/home/kek/.nuget/packages/",
+      "outputPath": "/home/kek/Sync/SudokuSolver/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\kek\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/kek/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -59,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "c:\\Program Files (X86)\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/kek/.dotnet/sdk/6.0.400/RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -18,7 +18,8 @@ namespace SudokuSolver
     {
         Cell[,] cells = new Cell[9, 9];
         Block[,] blocks = new Block[3, 3];
-        int iterations_until_randwalk = 10;
+        int iterations_until_randwalk = 100;
+        int randwalkLength = 5;
         int score = 0;
 
         public Sudoku(int[] inputpuzzle)
@@ -103,8 +104,7 @@ namespace SudokuSolver
                     iterationssame++;
                     if (iterationssame >= iterations_until_randwalk)
                     {
-                        // TODO random walk
-                        break;
+                        RandomWalk();
                         iterationssame = 0;
                     }
                 }
@@ -142,6 +142,19 @@ namespace SudokuSolver
                 score += 9 - column.Distinct().Count();
             }
             return score;
+        }
+
+        public void RandomWalk()
+        {
+            // do a random walk
+            Random rnd = new Random();
+            for (int i = 0; i < randwalkLength; i++)
+            {
+                (int x, int y) blockrandom = (rnd.Next(0, 3), rnd.Next(0, 3));
+                int cell1random = rnd.Next(0, 9);
+                int cell2random = rnd.Next(0, 9);
+                blocks[blockrandom.x, blockrandom.y].Swap(cell1random, cell2random);
+            }
         }
 
         public void Print()
