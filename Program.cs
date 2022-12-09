@@ -155,6 +155,7 @@ namespace SudokuSolver
                 int cell2random = rnd.Next(0, 9);
                 blocks[blockrandom.x, blockrandom.y].Swap(cell1random, cell2random);
             }
+            score = Score();
         }
 
         public void Print()
