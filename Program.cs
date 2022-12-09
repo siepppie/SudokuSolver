@@ -20,6 +20,8 @@ namespace SudokuSolver
         Block[,] blocks = new Block[3, 3];
         int iterations_until_randwalk = 100;
         int randwalkLength = 5;
+        int [] rows = new int[9];
+        int [] columns = new int[9];
         int score = 0;
 
         public Sudoku(int[] inputpuzzle)
@@ -82,6 +84,8 @@ namespace SudokuSolver
                     {
                         blocks[blockrandom.x, blockrandom.y].Swap(i, j);
                         // calculate score and check if it is better
+                        // TODO new score update function, score will be update
+                        //int newscore = Score_Update(blockrandom.x, blockrandom.y, i, j);
                         int newscore = Score();
                         if (newscore < bestscore)
                         {
@@ -117,9 +121,8 @@ namespace SudokuSolver
 
         int Score()
         {
-            // loop over rows and columns and check how many numbers are missing
             int score = 0;
-            // rows
+    
             for (int i = 0; i < 9; i++)
             {
                 int[] row = new int[9];
@@ -127,7 +130,7 @@ namespace SudokuSolver
                 {
                     row[j] = cells[i, j].value;
                 }
-                score += 9 - row.Distinct().Count();
+                rows[i] = 9 - row.Distinct().Count();
             }
             // columns
             for (int i = 0; i < 9; i++)
@@ -137,8 +140,59 @@ namespace SudokuSolver
                 {
                     column[j] = cells[j, i].value;
                 }
-                score += 9 - column.Distinct().Count();
+                columns[i] = 9 - column.Distinct().Count();
             }
+            return score;
+
+        }
+
+        int Update_Score(int block_x, int block_y, int cell_1, int cell_2)
+        {
+            int[] column = new int[9];
+            int x_coordinaat_1 = block_x * 3 + cell_1 % 3;
+            int y_coordinaat_1 = block_y * 3 + cell_1 / 3;
+
+            int x_coordinaat_2 = block_x * 3 + cell_2 % 3;
+            int y_coordinaat_2 = block_y * 3 + cell_2 / 3;
+
+            if (x_coordinaat_1 != x_coordinaat_2)
+            {
+                //calculate the score for both columns
+                for (int j = 0; j < 9; j++)
+                {
+                    column[j] = cells[x_coordinaat_1, j].value;
+                }
+                
+                columns[x_coordinaat_1] = 9 - column.Distinct().Count();
+                
+                column = new int[9];
+
+                for (int j = 0; j < 9; j++)
+                {
+                    column[j] = cells[x_coordinaat_2, j].value;
+                }
+                columns[x_coordinaat_2] = 9 - column.Distinct().Count();
+            }
+            else
+            {
+                //calculate the score for one column
+                int[] column = new int[9];
+                for (int j = 0; j < 9; j++)
+                {
+                    column[j] = cells[x_coordinaat_1, j].value;
+                }
+                rows[x_coordinaat_1] = 9 - column.Distinct().Count();
+            }
+
+            if (y_coordinaat_1 != y_coordinaat_2)
+            {
+                //calculate the score for both rows
+            }
+            else
+            {
+                //calculate the score for one row
+            }
+
             return score;
         }
 
