@@ -8,26 +8,24 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\siebe\\.nuget\\packages\\": {}
+    "/Users/luchampsink/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\siebe\\OneDrive - Universiteit Utrecht\\Computationele Linguistiek\\Programmeeropdrachten\\Programmeeropdracht 1\\Programmeeropdracht 1.csproj",
+      "projectUniqueName": "/Users/luchampsink/Documents/UNI/2022 - 2023/Blok 2/Computationele Intelligentie/Sudoku/SudokuSolver/Programmeeropdracht 1.csproj",
       "projectName": "Programmeeropdracht 1",
-      "projectPath": "C:\\Users\\siebe\\OneDrive - Universiteit Utrecht\\Computationele Linguistiek\\Programmeeropdrachten\\Programmeeropdracht 1\\Programmeeropdracht 1.csproj",
-      "packagesPath": "C:\\Users\\siebe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\siebe\\OneDrive - Universiteit Utrecht\\Computationele Linguistiek\\Programmeeropdrachten\\Programmeeropdracht 1\\obj\\",
+      "projectPath": "/Users/luchampsink/Documents/UNI/2022 - 2023/Blok 2/Computationele Intelligentie/Sudoku/SudokuSolver/Programmeeropdracht 1.csproj",
+      "packagesPath": "/Users/luchampsink/.nuget/packages/",
+      "outputPath": "/Users/luchampsink/Documents/UNI/2022 - 2023/Blok 2/Computationele Intelligentie/Sudoku/SudokuSolver/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\siebe\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/luchampsink/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -51,7 +49,8 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -60,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.402/RuntimeIdentifierGraph.json"
       }
     }
   }
