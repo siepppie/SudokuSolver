@@ -105,16 +105,18 @@ namespace SudokuSolver
                 // swap with every other cell
                 for (int j = 0; j < 9; j++)
                 {
-                    block.Swap(i, j);
-                    // calculate new score and check if it is better
-                    int newscore = Score_After_Swap(x, y, i, j);
-                    if (newscore < bestscore)
+                    if(block.Swap(i, j))
                     {
-                        bestscore = newscore;
-                        besti = i;
-                        bestj = j;
+                        // calculate new score and check if it is better
+                        int newscore = Score_After_Swap(x, y, i, j);
+                        if (newscore < bestscore)
+                        {
+                            bestscore = newscore;
+                            besti = i;
+                            bestj = j;
+                        }
+                        block.Swap(i, j);
                     }
-                    block.Swap(i, j);
                 }
             }
             // do the best swap
