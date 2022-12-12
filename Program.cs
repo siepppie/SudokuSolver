@@ -83,8 +83,7 @@ namespace SudokuSolver
                     for (int j = 0; j < 9; j++)
                     {
                         blocks[blockrandom.x, blockrandom.y].Swap(i, j);
-                        // calculate score and check if it is better
-                        // TODO new score update function, score will be update
+                        // calculate new score and check if it is better
                         int newscore = Update_Score(blockrandom.x, blockrandom.y, i, j);
                         if (newscore < bestscore)
                         {
@@ -121,30 +120,19 @@ namespace SudokuSolver
         int Score()
         {
             int score = 0;
-    
+            // rows
             for (int i = 0; i < 9; i++)
             {
-                int[] row = new int[9];
-                for (int j = 0; j < 9; j++)
-                {
-                    row[j] = cells[i, j].value;
-                }
-                rows[i] = 9 - row.Distinct().Count();
+                rows[i] = Calc_Row(i);
                 score += rows[i];
             }
             // columns
             for (int i = 0; i < 9; i++)
             {
-                int[] column = new int[9];
-                for (int j = 0; j < 9; j++)
-                {
-                    column[j] = cells[j, i].value;
-                }
-                columns[i] = 9 - column.Distinct().Count();
+                columns[i] = Calc_Column(i);
                 score += columns[i];
             }
             return score;
-
         }
 
         int Update_Score(int block_x, int block_y, int cell_1, int cell_2)
@@ -166,67 +154,50 @@ namespace SudokuSolver
             if (x_coordinaat_1 != x_coordinaat_2)
             {
                 //calculate the score for both columns
-                for (int j = 0; j < 9; j++)
-                {
-                    column[j] = cells[x_coordinaat_1, j].value;
-                }
-                potential_x_value = 9 - column.Distinct().Count();
-                
-                column = new int[9];
-                for (int j = 0; j < 9; j++)
-                {
-                    column[j] = cells[x_coordinaat_2, j].value;
-                }
-                potential_x_value += 9 - column.Distinct().Count();
-
+                potential_x_value = Calc_Column(x_coordinaat_1);
+                potential_x_value += Calc_Column(x_coordinaat_2);
                 difference = potential_x_value - columns[x_coordinaat_1] - columns[x_coordinaat_2];
             }
             else
             {
                 //calculate the score for one column
-                column = new int[9];
-                for (int j = 0; j < 9; j++)
-                {
-                    column[j] = cells[x_coordinaat_1, j].value;
-                }
-                potential_x_value = 9 - column.Distinct().Count();
-
+                potential_x_value = Calc_Column(x_coordinaat_1);
                 difference = potential_x_value - columns[x_coordinaat_1];
             }
-
             // calculate the potential new scores for the available columns
             if (y_coordinaat_1 != y_coordinaat_2)
             {
                 //calculate the score for both rows
-                for (int j = 0; j < 9; j++)
-                {
-                    row[j] = cells[y_coordinaat_1, j].value;
-                }
-                potential_y_value = 9 - row.Distinct().Count();
-                
-                row = new int[9];
-                for (int j = 0; j < 9; j++)
-                {
-                    column[j] = cells[y_coordinaat_2, j].value;
-                }
-                potential_y_value += 9 - row.Distinct().Count();
-
+                potential_y_value = Calc_Row(y_coordinaat_1);
+                potential_y_value += Calc_Row(y_coordinaat_2);
                 difference += potential_y_value - rows[y_coordinaat_1] - rows[y_coordinaat_2];
-
             }
             else
             {
                 //calculate the score for one row
-                row = new int[9];
-                for (int j = 0; j < 9; j++)
-                {
-                    row[j] = cells[y_coordinaat_1, j].value;
-                }
-                potential_y_value = 9 - row.Distinct().Count();
-
+                potential_y_value = Calc_Row(y_coordinaat_1);
                 difference += potential_y_value - rows[y_coordinaat_1];
             }
             return score + difference;
+        }
+
+        public int Calc_Row(int row)
+        {
+            int[] rowarray = new int[9];
+            for (int j = 0; j < 9; j++)
+            {
+                rowarray[j] = cells[row, j].value;
+            }
+            return 9 - rowarray.Distinct().Count();
+        }
+        public int Calc_Column(int column)
+        {
+            int[] columnarray = new int[9];
+            for (int j = 0; j < 9; j++)
+            {
+                columnarray[j] = cells[j, column].value;
+            }
+            return 9 - columnarray.Distinct().Count();
         }
 
         public void RandomWalk()
