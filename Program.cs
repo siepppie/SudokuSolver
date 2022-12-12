@@ -146,7 +146,7 @@ namespace SudokuSolver
         {
             int potential_x_value;
             int potential_y_value;
-            int difference;
+            int difference = 0;
 
             int x1 = block_x * 3 + cell_1 % 3;
             int y1 = block_y * 3 + cell_1 / 3;
@@ -160,13 +160,13 @@ namespace SudokuSolver
                 //calculate the score for both column_scores
                 potential_x_value = Calc_Column(x1);
                 potential_x_value += Calc_Column(x2);
-                difference = potential_x_value - column_scores[x1] - column_scores[x2];
+                difference += potential_x_value - column_scores[x1] - column_scores[x2];
             }
             else
             {
                 //calculate the score for one column
                 potential_x_value = Calc_Column(x1);
-                difference = potential_x_value - column_scores[x1];
+                difference += potential_x_value - column_scores[x1];
             }
             // calculate the potential new scores for the available column_scores
             if (y1 != y2)
