@@ -20,8 +20,8 @@ namespace SudokuSolver
         Block[,] blocks = new Block[3, 3];
         int iterations_until_randwalk = 100;
         int randwalkLength = 5;
-        int [] rows = new int[9];
-        int [] columns = new int[9];
+        int [] row_scores = new int[9];
+        int [] column_scores = new int[9];
         int score = 0;
 
         public Sudoku(int[] inputpuzzle)
@@ -127,63 +127,60 @@ namespace SudokuSolver
         int Score()
         {
             int score = 0;
-            // rows
+            // row_scores
             for (int i = 0; i < 9; i++)
             {
-                rows[i] = Calc_Row(i);
-                score += rows[i];
+                row_scores[i] = Calc_Row(i);
+                score += row_scores[i];
             }
-            // columns
+            // column_scores
             for (int i = 0; i < 9; i++)
             {
-                columns[i] = Calc_Column(i);
-                score += columns[i];
+                column_scores[i] = Calc_Column(i);
+                score += column_scores[i];
             }
             return score;
         }
 
         int Update_Score(int block_x, int block_y, int cell_1, int cell_2)
         {
-            int[] column = new int[9];
-            int[] row = new int[9];
-
             int potential_x_value;
             int potential_y_value;
             int difference;
 
-            int x_coordinaat_1 = block_x * 3 + cell_1 % 3;
-            int y_coordinaat_1 = block_y * 3 + cell_1 / 3;
+            int x1 = block_x * 3 + cell_1 % 3;
+            int y1 = block_y * 3 + cell_1 / 3;
 
-            int x_coordinaat_2 = block_x * 3 + cell_2 % 3;
-            int y_coordinaat_2 = block_y * 3 + cell_2 / 3;
+            int x2 = block_x * 3 + cell_2 % 3;
+            int y2 = block_y * 3 + cell_2 / 3;
 
-            // calculate the potential new scores for the available rows
-            if (x_coordinaat_1 != x_coordinaat_2)
+            // calculate the potential new scores for the available row_scores
+            if (x1 != x2)
             {
-                //calculate the score for both columns
-                potential_x_value = Calc_Column(x_coordinaat_1);
-                potential_x_value += Calc_Column(x_coordinaat_2);
-                difference = potential_x_value - columns[x_coordinaat_1] - columns[x_coordinaat_2];
+                //calculate the score for both column_scores
+                potential_x_value = Calc_Column(x1);
+                potential_x_value += Calc_Column(x2);
+                difference = potential_x_value - column_scores[x1] - column_scores[x2];
             }
             else
             {
                 //calculate the score for one column
-                potential_x_value = Calc_Column(x_coordinaat_1);
-                difference = potential_x_value - columns[x_coordinaat_1];
+                potential_x_value = Calc_Column(x1);
+                difference = potential_x_value - column_scores[x1];
             }
-            // calculate the potential new scores for the available columns
-            if (y_coordinaat_1 != y_coordinaat_2)
+            // calculate the potential new scores for the available column_scores
+            if (y1 != y2)
             {
-                //calculate the score for both rows
-                potential_y_value = Calc_Row(y_coordinaat_1);
-                potential_y_value += Calc_Row(y_coordinaat_2);
-                difference += potential_y_value - rows[y_coordinaat_1] - rows[y_coordinaat_2];
+                //calculate the score for both row_scores
+                potential_y_value = Calc_Row(y1);
+                potential_y_value += Calc_Row(y2);
+                difference += potential_y_value - row_scores[y1] - row_scores[y2];
             }
             else
             {
                 //calculate the score for one row
-                potential_y_value = Calc_Row(y_coordinaat_1);
-                difference += potential_y_value - rows[y_coordinaat_1];
+                potential_y_value = Calc_Row(y1);
+                difference += potential_y_value - row_scores[y1];
             }
             return score + difference;
         }
