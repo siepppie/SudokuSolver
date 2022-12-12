@@ -73,31 +73,7 @@ namespace SudokuSolver
                 // select random block and try all swaps, pick the best one
                 Random rnd = new Random();
                 (int x, int y) blockrandom = (rnd.Next(0, 3), rnd.Next(0, 3));
-                int bestscore = score;
-                int besti = 0;
-                int bestj = 0;
-                // for every cell in block
-                for (int i = 0; i < 9; i++)
-                {
-                    // swap with every other cell
-                    for (int j = 0; j < 9; j++)
-                    {
-                        blocks[blockrandom.x, blockrandom.y].Swap(i, j);
-                        // calculate new score and check if it is better
-                        int newscore = Update_Score(blockrandom.x, blockrandom.y, i, j);
-                        if (newscore < bestscore)
-                        {
-                            bestscore = newscore;
-                            besti = i;
-                            bestj = j;
-                        }
-                        blocks[blockrandom.x, blockrandom.y].Swap(i, j);
-                    }
-                }
-                // do the best swap
-                blocks[blockrandom.x, blockrandom.y].Swap(besti, bestj);
-                score = bestscore;
-                Console.WriteLine(score);
+                DoBestSwap(blocks[blockrandom.x, blockrandom.y], blockrandom.x, blockrandom.y);
                 // if score is the same as before check if we should do a random walk
                 if (score == prev_score)
                 {
@@ -115,6 +91,37 @@ namespace SudokuSolver
                 }
                 prev_score = score;
             }
+        }
+
+        // find best swap in block
+        void DoBestSwap(Block block, int x, int y)
+        {
+            int bestscore = score;
+            int besti = 0;
+            int bestj = 0;
+            // for every cell in block
+            for (int i = 0; i < 9; i++)
+            {
+                // swap with every other cell
+                for (int j = 0; j < 9; j++)
+                {
+                    block.Swap(i, j);
+                    // calculate new score and check if it is better
+                    int newscore = Update_Score(x, y, i, j);
+                    if (newscore < bestscore)
+                    {
+                        bestscore = newscore;
+                        besti = i;
+                        bestj = j;
+                    }
+                    block.Swap(i, j);
+                }
+            }
+            // do the best swap
+            block.Swap(besti, bestj);
+            score = bestscore;
+            Console.WriteLine(score);
+            Print();
         }
 
         int Score()
