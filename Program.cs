@@ -85,18 +85,14 @@ namespace SudokuSolver
                         blocks[blockrandom.x, blockrandom.y].Swap(i, j);
                         // calculate score and check if it is better
                         // TODO new score update function, score will be update
-                        if(Update_Score(blockrandom.x, blockrandom.y, i, j))
+                        int newscore = Score();
+                        if (newscore < bestscore)
                         {
-                            int newscore = Score();
-                            if (newscore < bestscore)
-                            {
-                                bestscore = newscore;
-                                besti = i;
-                                bestj = j;
-                            }
-                            blocks[blockrandom.x, blockrandom.y].Swap(i, j);
+                            bestscore = newscore;
+                            besti = i;
+                            bestj = j;
                         }
-
+                        blocks[blockrandom.x, blockrandom.y].Swap(i, j);
                     }
                 }
                 // do the best swap
