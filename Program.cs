@@ -107,7 +107,7 @@ namespace SudokuSolver
                 {
                     block.Swap(i, j);
                     // calculate new score and check if it is better
-                    int newscore = Update_Score(x, y, i, j);
+                    int newscore = Score_After_Swap(x, y, i, j);
                     if (newscore < bestscore)
                     {
                         bestscore = newscore;
@@ -142,7 +142,7 @@ namespace SudokuSolver
             return score;
         }
 
-        int Update_Score(int block_x, int block_y, int cell_1, int cell_2)
+        int Score_After_Swap(int block_x, int block_y, int cell_1, int cell_2)
         {
             int potential_x_value;
             int potential_y_value;
