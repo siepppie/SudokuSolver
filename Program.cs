@@ -12,6 +12,9 @@ namespace SudokuSolver
             Sudoku sudoku = new Sudoku(inputpuzzle);
             sudoku.Solve();
             sudoku.Print();
+
+            // test the score_after_swap function
+            Console.WriteLine(sudoku.Score_After_Swap(0, 0, 0, 1));
         }
     }
     class Sudoku
@@ -119,9 +122,14 @@ namespace SudokuSolver
             }
             // do the best swap
             block.Swap(besti, bestj);
+            // update score
             score = bestscore;
+            // update row and column scores
+            row_scores[y * 3 + besti / 3] = Calc_Row(y * 3 + besti / 3);
+            column_scores[x * 3 + besti % 3] = Calc_Column(x * 3 + besti % 3);
+            row_scores[y * 3 + bestj / 3] = Calc_Row(y * 3 + bestj / 3);
+            column_scores[x * 3 + bestj % 3] = Calc_Column(x * 3 + bestj % 3);
             Console.WriteLine(score);
-            Print();
         }
 
         int Score()
