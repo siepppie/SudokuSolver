@@ -85,7 +85,7 @@ namespace SudokuSolver
                         blocks[blockrandom.x, blockrandom.y].Swap(i, j);
                         // calculate score and check if it is better
                         // TODO new score update function, score will be update
-                        int newscore = Score();
+                        int newscore = Update_Score(blockrandom.x, blockrandom.y, i, j);
                         if (newscore < bestscore)
                         {
                             bestscore = newscore;
@@ -147,7 +147,7 @@ namespace SudokuSolver
 
         }
 
-        bool Update_Score(int block_x, int block_y, int cell_1, int cell_2)
+        int Update_Score(int block_x, int block_y, int cell_1, int cell_2)
         {
             int[] column = new int[9];
             int[] row = new int[9];
@@ -226,22 +226,7 @@ namespace SudokuSolver
 
                 difference += potential_y_value - rows[y_coordinaat_1];
             }
-
-            //check if the new score is better, if so, return true
-            if (difference < 0)
-            {
-                //Moeten deze hier al aangepast worden?
-                // columns[x_coordinaat_1] = potential_x_value;
-                // columns[x_coordinaat_2] = potential_x_value;
-                // rows[y_coordinaat_1] = potential_y_value;
-                // rows[y_coordinaat_2] = potential_y_value;
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return score + difference;
         }
 
         public void RandomWalk()
