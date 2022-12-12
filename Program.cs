@@ -12,9 +12,6 @@ namespace SudokuSolver
             Sudoku sudoku = new Sudoku(inputpuzzle);
             sudoku.Solve();
             sudoku.Print();
-
-            // test the score_after_swap function
-            Console.WriteLine(sudoku.Score_After_Swap(0, 0, 0, 1));
         }
     }
     class Sudoku
