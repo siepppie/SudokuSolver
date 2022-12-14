@@ -18,8 +18,8 @@ namespace SudokuSolver
     {
         Cell[,] cells = new Cell[9, 9];
         Block[,] blocks = new Block[3, 3];
-        int iterations_until_randwalk = 100;
-        int randwalkLength = 5;
+        int iterations_until_randwalk = 250;
+        int randwalkLength = 10;
         int [] row_scores = new int[9];
         int [] column_scores = new int[9];
         int score = 0;
@@ -96,6 +96,7 @@ namespace SudokuSolver
         // find best swap in block
         void DoBestSwap(Block block, int x, int y)
         {
+            int oldscore = score;
             int bestscore = score;
             int besti = 0;
             int bestj = 0;
@@ -108,7 +109,8 @@ namespace SudokuSolver
                     if(block.Swap(i, j))
                     {
                         // calculate new score and check if it is better
-                        int newscore = Score_After_Swap(x, y, i, j);
+                        int newscore = Score();
+                        // int newscore = Score_After_Swap(x, y, i, j);
                         if (newscore < bestscore)
                         {
                             bestscore = newscore;
@@ -124,10 +126,10 @@ namespace SudokuSolver
             // update score
             score = bestscore;
             // update row and column scores
-            row_scores[y * 3 + besti / 3] = Calc_Row(y * 3 + besti / 3);
-            column_scores[x * 3 + besti % 3] = Calc_Column(x * 3 + besti % 3);
-            row_scores[y * 3 + bestj / 3] = Calc_Row(y * 3 + bestj / 3);
-            column_scores[x * 3 + bestj % 3] = Calc_Column(x * 3 + bestj % 3);
+            // row_scores[y * 3 + besti / 3] = Calc_Row(y * 3 + besti / 3);
+            // column_scores[x * 3 + besti % 3] = Calc_Column(x * 3 + besti % 3);
+            // row_scores[y * 3 + bestj / 3] = Calc_Row(y * 3 + bestj / 3);
+            // column_scores[x * 3 + bestj % 3] = Calc_Column(x * 3 + bestj % 3);
             Console.WriteLine(score);
         }
 
@@ -149,47 +151,36 @@ namespace SudokuSolver
             return score;
         }
 
-        int Score_After_Swap(int block_x, int block_y, int cell_1, int cell_2)
+        int Score_After_Swap(int x, int y, int i, int j)
         {
-            int potential_x_value;
-            int potential_y_value;
-            int difference = 0;
+            // initialize score, and save old row and column scores
+            int score = 0;
+            int old_row_score_i = row_scores[y * 3 + i / 3];
+            int old_row_score_j = row_scores[y * 3 + j / 3];
+            int old_column_score_i = column_scores[x * 3 + i % 3];
+            int old_column_score_j = column_scores[x * 3 + j % 3];
 
-            int x1 = block_x * 3 + cell_1 % 3;
-            int y1 = block_y * 3 + cell_1 / 3;
+            // row_scores
+            row_scores[y * 3 + i / 3] = Calc_Row(y * 3 + i / 3);
+            row_scores[y * 3 + j / 3] = Calc_Row(y * 3 + j / 3);
+            for (int k = 0; k < 9; k++)
+            {
+                score += row_scores[k];
+            }
+            // column_scores
+            column_scores[x * 3 + i % 3] = Calc_Column(x * 3 + i % 3);
+            column_scores[x * 3 + j % 3] = Calc_Column(x * 3 + j % 3);
+            for (int k = 0; k < 9; k++)
+            {
+                score += column_scores[k];
+            }
+            // revert row and column scores
+            row_scores[y * 3 + i / 3] = old_row_score_i;
+            row_scores[y * 3 + j / 3] = old_row_score_j;
+            column_scores[x * 3 + i % 3] = old_column_score_i;
+            column_scores[x * 3 + j % 3] = old_column_score_j;
 
-            int x2 = block_x * 3 + cell_2 % 3;
-            int y2 = block_y * 3 + cell_2 / 3;
-
-            // calculate the potential new scores for the available row_scores
-            if (x1 != x2)
-            {
-                //calculate the score for both column_scores
-                potential_x_value = Calc_Column(x1);
-                potential_x_value += Calc_Column(x2);
-                difference += potential_x_value - column_scores[x1] - column_scores[x2];
-            }
-            else
-            {
-                //calculate the score for one column
-                potential_x_value = Calc_Column(x1);
-                difference += potential_x_value - column_scores[x1];
-            }
-            // calculate the potential new scores for the available column_scores
-            if (y1 != y2)
-            {
-                //calculate the score for both row_scores
-                potential_y_value = Calc_Row(y1);
-                potential_y_value += Calc_Row(y2);
-                difference += potential_y_value - row_scores[y1] - row_scores[y2];
-            }
-            else
-            {
-                //calculate the score for one row
-                potential_y_value = Calc_Row(y1);
-                difference += potential_y_value - row_scores[y1];
-            }
-            return score + difference;
+            return score;
         }
 
         public int Calc_Row(int row)
