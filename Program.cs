@@ -18,8 +18,8 @@ namespace SudokuSolver
     {
         Cell[,] cells = new Cell[9, 9];
         Block[,] blocks = new Block[3, 3];
-        int iterations_until_randwalk = 10;
-        int randwalkLength = 20;
+        int iterations_until_randwalk = 20;
+        int randwalkLength = 40;
         int [] row_scores = new int[9];
         int [] column_scores = new int[9];
         int score = 0;
@@ -74,6 +74,12 @@ namespace SudokuSolver
                 Random rnd = new Random();
                 (int x, int y) blockrandom = (rnd.Next(0, 3), rnd.Next(0, 3));
                 DoBestSwap(blocks[blockrandom.x, blockrandom.y], blockrandom.x, blockrandom.y);
+                Console.WriteLine(score);
+                if (score != Score())
+                {
+                    Console.WriteLine("Score mismatch");
+                    Console.WriteLine(score);
+                }
                 // if score is the same as before check if we should do a random walk
                 if (score == prev_score)
                 {
@@ -116,7 +122,6 @@ namespace SudokuSolver
                             bestscore = newscore;
                             besti = i;
                             bestj = j;
-                            Console.WriteLine("new best score: " + bestscore);
                         }
                         block.Swap(i, j);
                     }
@@ -124,14 +129,9 @@ namespace SudokuSolver
             }
             // do the best swap
             block.Swap(besti, bestj);
-            // update score
+            // update the scores of the rows and columns and the score
+            Update_Scores_After_Swap(x, y, besti, bestj);
             score = bestscore;
-            // update row and column scores
-            row_scores[y * 3 + besti / 3] = Calc_Row(y * 3 + besti / 3);
-            column_scores[x * 3 + besti % 3] = Calc_Column(x * 3 + besti % 3);
-            row_scores[y * 3 + bestj / 3] = Calc_Row(y * 3 + bestj / 3);
-            column_scores[x * 3 + bestj % 3] = Calc_Column(x * 3 + bestj % 3);
-            Console.WriteLine(score);
         }
 
         int Score()
@@ -154,24 +154,24 @@ namespace SudokuSolver
 
         int Score_After_Swap(int x, int y, int i, int j)
         {
-            // calculate new row and column scores for the changed rows and columns
-            int diff = 0;
-            int new_row_score = Calc_Row(y * 3 + i / 3);
-            int new_column_score = Calc_Column(x * 3 + i % 3);
-            if (i / 3 != j / 3)
-            {
-                int new_row_score2 = Calc_Row(y * 3 + j / 3);
-                diff += new_row_score2 - row_scores[y * 3 + j / 3];
-            }
-            else if (i % 3 != j % 3)
-            {
-                int new_column_score2 = Calc_Column(x * 3 + j % 3);
-                diff += new_column_score2 - column_scores[x * 3 + j % 3];
-            }
-            // calculate difference in score
-            diff += new_row_score - row_scores[y * 3 + i / 3];
-            diff += new_column_score - column_scores[x * 3 + i % 3];
-            return score - diff;
+            int newscore = score;
+            newscore -= row_scores[y * 3 + i / 3];
+            newscore -= row_scores[y * 3 + j / 3];
+            newscore -= column_scores[x * 3 + i % 3];
+            newscore -= column_scores[x * 3 + j % 3];
+            newscore += Calc_Row(y * 3 + i / 3);
+            newscore += Calc_Row(y * 3 + j / 3);
+            newscore += Calc_Column(x * 3 + i % 3);
+            newscore += Calc_Column(x * 3 + j % 3);
+            return newscore;
+        }
+
+        void Update_Scores_After_Swap(int x, int y, int i, int j)
+        {
+            row_scores[y * 3 + i / 3] = Calc_Row(y * 3 + i / 3);
+            row_scores[y * 3 + j / 3] = Calc_Row(y * 3 + j / 3);
+            column_scores[x * 3 + i % 3] = Calc_Column(x * 3 + i % 3);
+            column_scores[x * 3 + j % 3] = Calc_Column(x * 3 + j % 3);
         }
 
         public int Calc_Row(int row)
