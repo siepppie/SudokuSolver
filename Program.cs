@@ -18,8 +18,8 @@ namespace SudokuSolver
     {
         Cell[,] cells = new Cell[9, 9];
         Block[,] blocks = new Block[3, 3];
-        int iterations_until_randwalk = 250;
-        int randwalkLength = 10;
+        int iterations_until_randwalk = 10;
+        int randwalkLength = 20;
         int [] row_scores = new int[9];
         int [] column_scores = new int[9];
         int score = 0;
@@ -109,13 +109,14 @@ namespace SudokuSolver
                     if(block.Swap(i, j))
                     {
                         // calculate new score and check if it is better
-                        int newscore = Score();
+                        int newscore = Score_After_Swap(x, y, i, j);
                         // int newscore = Score_After_Swap(x, y, i, j);
                         if (newscore < bestscore)
                         {
                             bestscore = newscore;
                             besti = i;
                             bestj = j;
+                            Console.WriteLine("new best score: " + bestscore);
                         }
                         block.Swap(i, j);
                     }
@@ -126,10 +127,10 @@ namespace SudokuSolver
             // update score
             score = bestscore;
             // update row and column scores
-            // row_scores[y * 3 + besti / 3] = Calc_Row(y * 3 + besti / 3);
-            // column_scores[x * 3 + besti % 3] = Calc_Column(x * 3 + besti % 3);
-            // row_scores[y * 3 + bestj / 3] = Calc_Row(y * 3 + bestj / 3);
-            // column_scores[x * 3 + bestj % 3] = Calc_Column(x * 3 + bestj % 3);
+            row_scores[y * 3 + besti / 3] = Calc_Row(y * 3 + besti / 3);
+            column_scores[x * 3 + besti % 3] = Calc_Column(x * 3 + besti % 3);
+            row_scores[y * 3 + bestj / 3] = Calc_Row(y * 3 + bestj / 3);
+            column_scores[x * 3 + bestj % 3] = Calc_Column(x * 3 + bestj % 3);
             Console.WriteLine(score);
         }
 
@@ -153,34 +154,24 @@ namespace SudokuSolver
 
         int Score_After_Swap(int x, int y, int i, int j)
         {
-            // initialize score, and save old row and column scores
-            int score = 0;
-            int old_row_score_i = row_scores[y * 3 + i / 3];
-            int old_row_score_j = row_scores[y * 3 + j / 3];
-            int old_column_score_i = column_scores[x * 3 + i % 3];
-            int old_column_score_j = column_scores[x * 3 + j % 3];
-
-            // row_scores
-            row_scores[y * 3 + i / 3] = Calc_Row(y * 3 + i / 3);
-            row_scores[y * 3 + j / 3] = Calc_Row(y * 3 + j / 3);
-            for (int k = 0; k < 9; k++)
+            // calculate new row and column scores for the changed rows and columns
+            int diff = 0;
+            int new_row_score = Calc_Row(y * 3 + i / 3);
+            int new_column_score = Calc_Column(x * 3 + i % 3);
+            if (i / 3 != j / 3)
             {
-                score += row_scores[k];
+                int new_row_score2 = Calc_Row(y * 3 + j / 3);
+                diff += new_row_score2 - row_scores[y * 3 + j / 3];
             }
-            // column_scores
-            column_scores[x * 3 + i % 3] = Calc_Column(x * 3 + i % 3);
-            column_scores[x * 3 + j % 3] = Calc_Column(x * 3 + j % 3);
-            for (int k = 0; k < 9; k++)
+            else if (i % 3 != j % 3)
             {
-                score += column_scores[k];
+                int new_column_score2 = Calc_Column(x * 3 + j % 3);
+                diff += new_column_score2 - column_scores[x * 3 + j % 3];
             }
-            // revert row and column scores
-            row_scores[y * 3 + i / 3] = old_row_score_i;
-            row_scores[y * 3 + j / 3] = old_row_score_j;
-            column_scores[x * 3 + i % 3] = old_column_score_i;
-            column_scores[x * 3 + j % 3] = old_column_score_j;
-
-            return score;
+            // calculate difference in score
+            diff += new_row_score - row_scores[y * 3 + i / 3];
+            diff += new_column_score - column_scores[x * 3 + i % 3];
+            return score - diff;
         }
 
         public int Calc_Row(int row)

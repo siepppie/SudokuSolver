@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\siebe\\OneDrive - Universiteit Utrecht\\Computationele Linguistiek\\Programmeeropdrachten\\Programmeeropdracht 1\\Programmeeropdracht 1.csproj": {}
+    "/home/kek/Sync/SudokuSolver/Programmeeropdracht 1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\siebe\\OneDrive - Universiteit Utrecht\\Computationele Linguistiek\\Programmeeropdrachten\\Programmeeropdracht 1\\Programmeeropdracht 1.csproj": {
+    "/home/kek/Sync/SudokuSolver/Programmeeropdracht 1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\siebe\\OneDrive - Universiteit Utrecht\\Computationele Linguistiek\\Programmeeropdrachten\\Programmeeropdracht 1\\Programmeeropdracht 1.csproj",
+        "projectUniqueName": "/home/kek/Sync/SudokuSolver/Programmeeropdracht 1.csproj",
         "projectName": "Programmeeropdracht 1",
-        "projectPath": "C:\\Users\\siebe\\OneDrive - Universiteit Utrecht\\Computationele Linguistiek\\Programmeeropdrachten\\Programmeeropdracht 1\\Programmeeropdracht 1.csproj",
-        "packagesPath": "C:\\Users\\siebe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\siebe\\OneDrive - Universiteit Utrecht\\Computationele Linguistiek\\Programmeeropdrachten\\Programmeeropdracht 1\\obj\\",
+        "projectPath": "/home/kek/Sync/SudokuSolver/Programmeeropdracht 1.csproj",
+        "packagesPath": "/home/kek/.nuget/packages/",
+        "outputPath": "/home/kek/Sync/SudokuSolver/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\siebe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/kek/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -53,7 +53,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/kek/.dotnet/sdk/6.0.400/RuntimeIdentifierGraph.json"
         }
       }
     }
