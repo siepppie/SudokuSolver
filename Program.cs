@@ -16,15 +16,13 @@ namespace SudokuSolver
 
     class Sudoku
     {
-        private int[] rowValues = new int[9];
-        private int[] columnValues = new int[9];
-        private Cell[,] cells = new Cell[9, 9];
-
-        class Cell
-        {
-            public int Value { get; set; }
-            public bool IsFixed { get; set; }
-        }
+        Cell[,] cells = new Cell[9, 9];
+        Block[,] blocks = new Block[3, 3];
+        int iterations_until_randwalk = 100;
+        int randwalkLength = 5;
+        int [] row_scores = new int[9];
+        int [] column_scores = new int[9];
+        int score = 0;
 
         class TrySwap
         {
@@ -134,9 +132,20 @@ namespace SudokuSolver
                     if (cells[row + i / 3, col + i % 3].Value != 0)
                         numbers[cells[row + i / 3, col + i % 3].Value - 1] = true;
                 }
-
-                // Loop through the array and fill in the missing values
-                for (int i = 0; i < 9; i++)
+            }
+            // intialize score
+            score = Score();
+            Console.WriteLine(score);
+            int prev_score = 0;
+            int iterationssame = 0;
+            while (score > 0)
+            {
+                // select random block and try all swaps, pick the best one
+                Random rnd = new Random();
+                (int x, int y) blockrandom = (rnd.Next(0, 3), rnd.Next(0, 3));
+                DoBestSwap(blocks[blockrandom.x, blockrandom.y], blockrandom.x, blockrandom.y);
+                // if score is the same as before check if we should do a random walk
+                if (score == prev_score)
                 {
                     // If the cell is empty, fill in the missing value
                     if (cells[row + i / 3, col + i % 3].Value == 0)
@@ -160,12 +169,11 @@ namespace SudokuSolver
 
         public void Solve()
         {
-            int value = EvaluationValue();
-            int oldValue = value;
-            int iterations = 0;
-
-            // While the sudoku is not solved
-            while (value != 0)
+            int bestscore = score;
+            int besti = 0;
+            int bestj = 0;
+            // for every cell in block
+            for (int i = 0; i < 9; i++)
             {
                 TrySwap trySwap = new TrySwap(value);
 
@@ -177,13 +185,9 @@ namespace SudokuSolver
                 {
                     for (int j = 0; j < 9; j++)
                     {
-                        // Save the row and column index of the cells
-                        trySwap.UpdateRowColumns(block, i, j);
-
-                        // Save the row and column values before the swap
-                        trySwap.SaveOldValues(rowValues, columnValues);
-
-                        if (SwapCells(block, i, j) && i != j)
+                        // calculate new score and check if it is better
+                        int newscore = Score_After_Swap(x, y, i, j);
+                        if (newscore < bestscore)
                         {
                             // Save the row and column values after the swap
                             trySwap.SaveNewValues(EvaluationRowColumn(trySwap.rowcolumnindexes[0], true), EvaluationRowColumn(trySwap.rowcolumnindexes[1], false), EvaluationRowColumn(trySwap.rowcolumnindexes[2], true), EvaluationRowColumn(trySwap.rowcolumnindexes[3], false));
@@ -192,79 +196,77 @@ namespace SudokuSolver
                         }
                     }
                 }
+            }
+            // do the best swap
+            block.Swap(besti, bestj);
+            // update score
+            score = bestscore;
+            // update row and column scores
+            row_scores[y * 3 + besti / 3] = Calc_Row(y * 3 + besti / 3);
+            column_scores[x * 3 + besti % 3] = Calc_Column(x * 3 + besti % 3);
+            row_scores[y * 3 + bestj / 3] = Calc_Row(y * 3 + bestj / 3);
+            column_scores[x * 3 + bestj % 3] = Calc_Column(x * 3 + bestj % 3);
+            Console.WriteLine(score);
+        }
 
-                // If the best swap was found, execute it
-                if (trySwap.BestValue < value)
-                    SwapCells(block, trySwap.Besti, trySwap.Bestj);
-                    
-                    // Update the row and column values
-                    trySwap.UpdateRowColumns(block, trySwap.Besti, trySwap.Bestj);
-                    trySwap.SaveNewValues(EvaluationRowColumn(trySwap.rowcolumnindexes[0], true), EvaluationRowColumn(trySwap.rowcolumnindexes[1], false), EvaluationRowColumn(trySwap.rowcolumnindexes[2], true), EvaluationRowColumn(trySwap.rowcolumnindexes[3], false));
-                    trySwap.ExecuteSwap(ref rowValues, ref columnValues);
-
-                    // Update the evaluation value
-                    value = trySwap.BestValue;
-
-                // If the evaluation value is the same as the previous iteration, increase the number of iterations
-                if (value == oldValue)
-                    iterations++;
-                else
-                    iterations = 0;
-
-                // If the number of iterations is equal to 10, do a random walk
-                if (iterations == 10)
-                {
-                    trySwap.BestValue = value;
-
-                    // Execute 5 random walks
-                    for (int walk = 0; walk < 5; walk++)
-                    {
-                        // Select a random block
-                        int rndblock = new Random().Next(0, 9);
-
-                        // Select a random cell in the block
-                        int i = new Random().Next(0, 9);
-
-                        // Select a random cell in the block
-                        int j = new Random().Next(0, 9);
-
-                        // Save the row and column index of the cells
-                        trySwap.UpdateRowColumns(rndblock, i, j);
-
-                        // Save the row and column values before the swap
-                        trySwap.SaveOldValues(rowValues, columnValues);
-
-                        // Swap the two cells
-                        SwapCells(rndblock, i, j);
-
-                        trySwap.SaveNewValues(EvaluationRowColumn(trySwap.rowcolumnindexes[0], true), EvaluationRowColumn(trySwap.rowcolumnindexes[1], false), EvaluationRowColumn(trySwap.rowcolumnindexes[2], true), EvaluationRowColumn(trySwap.rowcolumnindexes[3], false));
-                        trySwap.ExecuteSwap(ref rowValues, ref columnValues);
-                        value = trySwap.CalculateNewValue();
-                        trySwap.BestValue = value;
-                    }
-                    iterations = 0;
-                }
-
-                oldValue = value;
+        int Score()
+        {
+            int score = 0;
+            // row_scores
+            for (int i = 0; i < 9; i++)
+            {
+                row_scores[i] = Calc_Row(i);
+                score += row_scores[i];
+            }
+            // column_scores
+            for (int i = 0; i < 9; i++)
+            {
+                column_scores[i] = Calc_Column(i);
+                score += column_scores[i];
             }
         }
 
-        // Swap two cells in the same block, only allowing the swap if the cells are not fixed
-        private bool SwapCells(int block, int i, int j)
+        int Score_After_Swap(int block_x, int block_y, int cell_1, int cell_2)
         {
-            int row = (block / 3) * 3;
-            int col = (block % 3) * 3;
+            int potential_x_value;
+            int potential_y_value;
+            int difference = 0;
 
-            // If the cells are not fixed, swap the values
-            if (!cells[row + i / 3, col + i % 3].IsFixed && !cells[row + j / 3, col + j % 3].IsFixed)
+            int x1 = block_x * 3 + cell_1 % 3;
+            int y1 = block_y * 3 + cell_1 / 3;
+
+            int x2 = block_x * 3 + cell_2 % 3;
+            int y2 = block_y * 3 + cell_2 / 3;
+
+            // calculate the potential new scores for the available row_scores
+            if (x1 != x2)
             {
-                int temp = cells[row + i / 3, col + i % 3].Value;
-                cells[row + i / 3, col + i % 3].Value = cells[row + j / 3, col + j % 3].Value;
-                cells[row + j / 3, col + j % 3].Value = temp;
-                return true;
+                //calculate the score for both column_scores
+                potential_x_value = Calc_Column(x1);
+                potential_x_value += Calc_Column(x2);
+                difference += potential_x_value - column_scores[x1] - column_scores[x2];
             }
-
-            return false;
+            else
+            {
+                //calculate the score for one column
+                potential_x_value = Calc_Column(x1);
+                difference += potential_x_value - column_scores[x1];
+            }
+            // calculate the potential new scores for the available column_scores
+            if (y1 != y2)
+            {
+                //calculate the score for both row_scores
+                potential_y_value = Calc_Row(y1);
+                potential_y_value += Calc_Row(y2);
+                difference += potential_y_value - row_scores[y1] - row_scores[y2];
+            }
+            else
+            {
+                //calculate the score for one row
+                potential_y_value = Calc_Row(y1);
+                difference += potential_y_value - row_scores[y1];
+            }
+            return score + difference;
         }
 
         private int EvaluationValue()

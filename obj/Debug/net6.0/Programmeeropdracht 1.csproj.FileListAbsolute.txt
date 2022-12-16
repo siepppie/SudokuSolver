@@ -13,6 +13,7 @@
 /home/kek/Sync/SudokuSolver/obj/Debug/net6.0/Programmeeropdracht 1.pdb
 /home/kek/Sync/SudokuSolver/obj/Debug/net6.0/Programmeeropdracht 1.genruntimeconfig.cache
 /home/kek/Sync/SudokuSolver/obj/Debug/net6.0/ref/Programmeeropdracht 1.dll
+<<<<<<< HEAD
 /Users/luchampsink/Documents/UNI/2022 - 2023/Blok 2/Computationele Intelligentie/Sudoku/SudokuSolver/obj/Debug/net6.0/Programmeeropdracht 1.csproj.AssemblyReference.cache
 /Users/luchampsink/Documents/UNI/2022 - 2023/Blok 2/Computationele Intelligentie/Sudoku/SudokuSolver/obj/Debug/net6.0/Programmeeropdracht 1.GeneratedMSBuildEditorConfig.editorconfig
 /Users/luchampsink/Documents/UNI/2022 - 2023/Blok 2/Computationele Intelligentie/Sudoku/SudokuSolver/obj/Debug/net6.0/Programmeeropdracht 1.AssemblyInfoInputs.cache
@@ -58,3 +59,5 @@ C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Progra
 C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\Programmeeropdracht 1.pdb
 C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\Programmeeropdracht 1.genruntimeconfig.cache
 C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\obj\Debug\net6.0\ref\Programmeeropdracht 1.dll
+=======
+>>>>>>> 1a8915aa078200b208cb9b8bd633f104bd0c388e

@@ -7,4 +7,8 @@ build_property.InvariantGlobalization =
 build_property.PlatformNeutralAssembly = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Programmeeropdracht_1
+<<<<<<< HEAD
 build_property.ProjectDir = C:\Users\siebe\OneDrive - Universiteit Utrecht\Computationele Linguistiek\Programmeeropdrachten\Programmeeropdracht 1\
+=======
+build_property.ProjectDir = /home/kek/Sync/SudokuSolver/
+>>>>>>> 1a8915aa078200b208cb9b8bd633f104bd0c388e
