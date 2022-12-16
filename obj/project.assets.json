@@ -8,16 +8,11 @@
     "net6.0": []
   },
   "packageFolders": {
-<<<<<<< HEAD
     "C:\\Users\\siebe\\.nuget\\packages\\": {}
-=======
-    "/home/kek/.nuget/packages/": {}
->>>>>>> 1a8915aa078200b208cb9b8bd633f104bd0c388e
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\siebe\\OneDrive - Universiteit Utrecht\\Computationele Linguistiek\\Programmeeropdrachten\\Programmeeropdracht 1\\Programmeeropdracht 1.csproj",
       "projectName": "Programmeeropdracht 1",
       "projectPath": "C:\\Users\\siebe\\OneDrive - Universiteit Utrecht\\Computationele Linguistiek\\Programmeeropdrachten\\Programmeeropdracht 1\\Programmeeropdracht 1.csproj",
@@ -27,16 +22,6 @@
       "configFilePaths": [
         "C:\\Users\\siebe\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-=======
-      "projectUniqueName": "/home/kek/Sync/SudokuSolver/Programmeeropdracht 1.csproj",
-      "projectName": "Programmeeropdracht 1",
-      "projectPath": "/home/kek/Sync/SudokuSolver/Programmeeropdracht 1.csproj",
-      "packagesPath": "/home/kek/.nuget/packages/",
-      "outputPath": "/home/kek/Sync/SudokuSolver/obj/",
-      "projectStyle": "PackageReference",
-      "configFilePaths": [
-        "/home/kek/.nuget/NuGet/NuGet.Config"
->>>>>>> 1a8915aa078200b208cb9b8bd633f104bd0c388e
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -75,12 +60,16 @@
             "privateAssets": "all"
           }
         },
-<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
-=======
-        "runtimeIdentifierGraphPath": "/home/kek/.dotnet/sdk/6.0.400/RuntimeIdentifierGraph.json"
->>>>>>> 1a8915aa078200b208cb9b8bd633f104bd0c388e
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\siebe\\OneDrive - Universiteit Utrecht\\Computationele Linguistiek\\Programmeeropdrachten\\Programmeeropdracht 1\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
