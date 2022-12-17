@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.IO;
 
 namespace SudokuSolver
 {
@@ -7,10 +8,50 @@ namespace SudokuSolver
     {
         public static void Main(string[] args)
         {
-            // Create a new Sudoku based on user input
-            Sudoku sudoku = new Sudoku(Console.ReadLine());
-            sudoku.Solve();
-            sudoku.Print();
+            // Create a new text file to write the performance tests to
+            string filePath = "PerformanceTests.csv";
+            File.Create(filePath).Close();
+            StreamWriter sw = new StreamWriter(filePath);
+
+            // Create string array for the 5 different sudoku's
+            string[] sudokuStrings = {
+            "0 0 3 0 2 0 6 0 0 9 0 0 3 0 5 0 0 1 0 0 1 8 0 6 4 0 0 0 0 8 1 0 2 9 0 0 7 0 0 0 0 0 0 0 8 0 0 6 7 0 8 2 0 0 0 0 2 6 0 9 5 0 0 8 0 0 2 0 3 0 0 9 0 0 5 0 1 0 3 0 0",
+            "2 0 0 0 8 0 3 0 0 0 6 0 0 7 0 0 8 4 0 3 0 5 0 0 2 0 9 0 0 0 1 0 5 4 0 8 0 0 0 0 0 0 0 0 0 4 0 2 7 0 6 0 0 0 3 0 1 0 0 7 0 4 0 7 2 0 0 4 0 0 6 0 0 0 4 0 1 0 0 0 3",
+            "0 0 0 0 0 0 9 0 7 0 0 0 4 2 0 1 8 0 0 0 0 7 0 5 0 2 6 1 0 0 9 0 4 0 0 0 0 5 0 0 0 0 0 4 0 0 0 0 5 0 7 0 0 9 9 2 0 1 0 8 0 0 0 0 3 4 0 5 9 0 0 0 5 0 7 0 0 0 0 0 0",
+            "0 3 0 0 5 0 0 4 0 0 0 8 0 1 0 5 0 0 4 6 0 0 0 0 0 1 2 0 7 0 5 0 2 0 8 0 0 0 0 6 0 3 0 0 0 0 4 0 1 0 9 0 3 0 2 5 0 0 0 0 0 9 8 0 0 1 0 2 0 6 0 0 0 8 0 0 6 0 0 2 0",
+            "0 2 0 8 1 0 7 4 0 7 0 0 0 0 3 1 0 0 0 9 0 0 0 2 8 0 5 0 0 9 0 4 0 0 8 7 4 0 0 2 0 8 0 0 3 1 6 0 0 3 0 2 0 0 3 0 2 7 0 0 0 6 0 0 0 5 6 0 0 0 0 8 0 7 6 0 5 1 0 9 0"
+            };
+
+            // Create two int arrays to store the different values for the amount of iterations before random walk and the random walk distance
+            int[] iterationsBeforeRandomWalk = { 10, 20, 30, 40, 50 };
+            int[] randomWalkDistance = { 5, 10, 15, 20, 25 };
+
+            // Write the header of the csv file
+            sw.WriteLine("Sudoku, Iterations before random walk, Random walk distance, Average loops");
+
+            for (int i = 0; i < iterationsBeforeRandomWalk.Length; i++)
+            {
+                for (int j = 0; j < randomWalkDistance.Length; j++)
+                {
+                    for (int k = 0; k < sudokuStrings.Length; k++)
+                    {
+                        int averageLoops = 0;
+                        for (int l = 0; l < 10; l++)
+                        {
+                            Sudoku sudoku = new Sudoku(sudokuStrings[k]);
+                            sudoku.IterationsBeforeRandomWalk = iterationsBeforeRandomWalk[i];
+                            sudoku.RandomWalkDistance = randomWalkDistance[j];
+                            int loops = sudoku.Solve();
+                            averageLoops += loops;
+                        }
+                        averageLoops /= 10;
+
+                        sw.WriteLine(k + 1 + ", " + iterationsBeforeRandomWalk[i] + ", " + randomWalkDistance[j] + ", " + averageLoops);
+                    }
+                }
+            }
+            
+            sw.Close();
         }
     }
 
@@ -19,11 +60,14 @@ namespace SudokuSolver
         private int[] rowValues = new int[9];
         private int[] columnValues = new int[9];
         private Cell[,] cells = new Cell[9, 9];
+        public int IterationsBeforeRandomWalk = 10;
+        public int RandomWalkDistance = 5;
 
         class Cell
         {
             public int Value { get; set; }
             public bool IsFixed { get; set; }
+
         }
 
         class TrySwap
@@ -158,11 +202,12 @@ namespace SudokuSolver
 
         }
 
-        public void Solve()
+        public int Solve()
         {
             int value = EvaluationValue();
             int oldValue = value;
             int iterations = 0;
+            int loopCounter = 0;
 
             // While the sudoku is not solved
             while (value != 0)
@@ -212,12 +257,12 @@ namespace SudokuSolver
                     iterations = 0;
 
                 // If the number of iterations is equal to 10, do a random walk
-                if (iterations == 10)
+                if (iterations == IterationsBeforeRandomWalk)
                 {
                     trySwap.BestValue = value;
 
                     // Execute 5 random walks
-                    for (int walk = 0; walk < 5; walk++)
+                    for (int walk = 0; walk < RandomWalkDistance; walk++)
                     {
                         // Select a random block
                         int rndblock = new Random().Next(0, 9);
@@ -245,8 +290,14 @@ namespace SudokuSolver
                     iterations = 0;
                 }
 
+                if (loopCounter > 10000)
+                    return -1;
+
                 oldValue = value;
+                loopCounter++;
             }
+
+            return loopCounter;
         }
 
         // Swap two cells in the same block, only allowing the swap if the cells are not fixed
