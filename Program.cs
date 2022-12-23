@@ -33,11 +33,10 @@ namespace SudokuSolver
             {
                 for (int j = 0; j < randomWalkDistance.Length; j++)
                 {
-                    Console.WriteLine(j);
                     for (int k = 0; k < sudokuStrings.Length; k++)
                     {
                         int averageLoops = 0;
-                        for (int l = 0; l < 10; l++)
+                        for (int l = 0; l < 100; l++)
                         {
                             Sudoku sudoku = new Sudoku(sudokuStrings[k]);
                             sudoku.IterationsBeforeRandomWalk = iterationsBeforeRandomWalk[i];
