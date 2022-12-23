@@ -23,8 +23,8 @@ namespace SudokuSolver
             };
 
             // Create two int arrays to store the different values for the amount of iterations before random walk and the random walk distance
-            int[] iterationsBeforeRandomWalk = { 10, 20, 30, 40, 50 };
-            int[] randomWalkDistance = { 5, 10, 15, 20, 25 };
+            int[] iterationsBeforeRandomWalk = { 5, 10, 20, 30, 40, 50 };
+            int[] randomWalkDistance = { 2, 3, 4, 5, 8, 10};
 
             // Write the header of the csv file
             sw.WriteLine("Sudoku, Iterations before random walk, Random walk distance, Average loops");
@@ -33,6 +33,7 @@ namespace SudokuSolver
             {
                 for (int j = 0; j < randomWalkDistance.Length; j++)
                 {
+                    Console.WriteLine(j);
                     for (int k = 0; k < sudokuStrings.Length; k++)
                     {
                         int averageLoops = 0;
@@ -290,8 +291,8 @@ namespace SudokuSolver
                     iterations = 0;
                 }
 
-                if (loopCounter > 10000)
-                    return -1;
+                if (loopCounter > 100000)
+                    return loopCounter;
 
                 oldValue = value;
                 loopCounter++;
