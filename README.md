@@ -1,21 +1,21 @@
 # SudokuSolver
-SudokuSolver for Computational Intelligence at Utrecht University
+A computational intelligence-based Sudoku solver for Utrecht University.
 
-input: 81 numbers seperated by spaces (0 for empty)\
-output: solved sudoku
+# Input
+81 numbers separated by spaces (0 for empty)
+#Output:
+Solved Sudoku puzzle
 
 # How to use
-simply run the program.cs and enter the puzzle
+Open the Program.cs file and enter your sudoku's
 
 # How it works
-1: read the sudoku\
-2: keep track of which cells are fixed\
-3: fill the 3x3 blocks with the numbers they don't contain\
-4: choose a random block\
-5: try all possible swaps in the block (of 2 non fixed numbers)\
-6: choose the best swap if it gives a lower or equal score than before the swap\
-7: if the score is the same after x iterations of doing this, do a randomwalk of S times a searchoperator (and return to chosing random blocks\
-8: Print the solved sudoku
-
-score calculation:\
-sum of all the missing numbers of the rows and columns. A solved sudoku has a score of 0.
+Reads the Sudoku puzzle
+Keeps track of fixed cells
+Fills 3x3 blocks with numbers they don't contain
+Selects a random block
+Tries all possible swaps of 2 non-fixed numbers in the block
+Selects the best swap if it results in a lower or equal score
+If the score remains unchanged after multiple iterations, performs a random walk using search operators and returns to selecting random blocks
+Prints the solved Sudoku puzzle
+Score calculation: Sum of all missing numbers in rows and columns. A solved Sudoku has a score of 0.
