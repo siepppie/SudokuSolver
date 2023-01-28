@@ -3,7 +3,7 @@ A computational intelligence-based Sudoku solver for Utrecht University.
 
 # Input
 81 numbers separated by spaces (0 for empty)
-#Output:
+# Output:
 Solved Sudoku puzzle
 
 # How to use
